@@ -25,6 +25,7 @@ void printStruct(struct MyStruct) EXPORT;
 void printStructP(struct MyStruct*) EXPORT;
 struct MyStruct retStruct() EXPORT;
 struct MyStruct* retStructP() EXPORT;
+struct MyStruct* retNull() EXPORT;
 
 void callCallback(int (*)()) EXPORT;
 }
@@ -107,6 +108,18 @@ MyStruct* retStructP() {
 		s[i] = i + 1;
 	}
 	return &myStru;
+}
+
+MyStruct* retNull() {
+  static MyStruct myStru;
+  static int i = 0;
+  printf("i = %d\n", i);
+  if (i % 2 == 0) {
+    ++i;
+    return &myStru;
+  }
+  ++i;
+  return NULL;
 }
 
 void callCallback(int (*callback)()) {

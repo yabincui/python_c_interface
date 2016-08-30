@@ -43,6 +43,11 @@ s = ct.create_string_buffer('\000' * 32)
 s.value = "hello, world"
 lib.printString(s)
 
+lib.printString("hello, world")
+a = "hello"
+a += "wworld"
+lib.printString(a)
+
 # return string
 retStringFunc = lib.retString
 retStringFunc.restype = ct.c_char_p
@@ -96,6 +101,18 @@ for i in range(p[0].count):
     print p[0].s[i],
 print
 
+# check null pointer
+retNullFunc = lib.retNull
+retNullFunc.restype = ct.POINTER(MyStruct)
+for i in range(2):
+  p = retNullFunc()
+  print p
+  a = ct.cast(p, ct.c_void_p)
+  if a.value is None:
+    print 'retNullFunc() returns nullptr'
+  else:
+    print 'retNullFunc() doesn\'t return nullptr'
+    p[0]
 
 # python callback function called from c
 CALLBACK_TYPE = ct.CFUNCTYPE(ct.c_int);
@@ -108,8 +125,6 @@ def callback_func():
 
 callback = CALLBACK_TYPE(callback_func)
 lib.callCallback(callback)
-
-
 
 
 
